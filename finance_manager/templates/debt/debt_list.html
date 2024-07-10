@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Debt List
+{% endblock %}
+
+{% block content %}
+    <h1>Debt List</h1>
+
+    <!-- Add Debt Button -->
+    <a href="{% url 'add_debt' %}" class="button">Add Debt</a>
+
+    <!-- Debt List Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Debt Name</th>
+                <th>Amount</th>
+                <th>Due Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for debt in debts %}
+                <tr>
+                    <td>{{ debt.name }}</td>
+                    <td>{{ debt.amount }}</td>
+                    <td>{{ debt.due_date }}</td>
+                    <td>
+                        <a href="{% url 'edit_debt' debt.id %}">Edit</a>
+                        <a href="{% url 'delete_debt' debt.id %}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

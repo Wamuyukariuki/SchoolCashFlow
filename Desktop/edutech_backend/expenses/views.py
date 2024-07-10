@@ -1,18 +1,14 @@
 import logging
 from datetime import datetime
 
-import requests
 from django.db.models import Sum
-from django.http import Http404, JsonResponse
+from django.http import Http404
+from django.http import JsonResponse
 from django.views import View
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
+from rest_framework import status, permissions, authentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from expensetypes.models import ExpenseTypes
-from expensetypes.serializers import ExpenseTypesSerializer
 from .models import Expenses
 from .serializers import ExpensesSerializer
 
@@ -20,6 +16,9 @@ logger = logging.getLogger(__name__)
 
 
 class ExpenseListAPIView(APIView):
+    # authentication_classes = [authentication.TokenAuthentication]
+    # permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
         try:
             expenses = self.get_queryset()
@@ -62,6 +61,9 @@ class ExpenseListAPIView(APIView):
 
 
 class ExpenseDetailAPIView(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Expenses.objects.get(pk=pk)
@@ -99,17 +101,10 @@ class ExpenseDetailAPIView(APIView):
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class ExpenseUpdateAPIView(APIView):
-    queryset = Expenses.objects.all()
-    serializer_class = ExpensesSerializer
-
-
-class ExpenseTypeUpdateAPIView(APIView):
-    queryset = ExpenseTypes.objects.all()
-    serializer_class = ExpenseTypesSerializer
-
-
 class ExpenseStatsView(View):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
         term = request.GET.get('term')
         month = request.GET.get('month')

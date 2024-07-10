@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Expense List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Expense List</h2>
+    <a href="{% url 'expense_create' %}">Add Expense</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expense in expenses %}
+            <tr>
+                <td>{{ expense.amount }}</td>
+                <td>{{ expense.description }}</td>
+                <td>{{ expense.date }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No expenses yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

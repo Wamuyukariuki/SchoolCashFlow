@@ -11,6 +11,16 @@ class ExpensesSerializer(serializers.ModelSerializer):
         model = Expenses
         fields = ['amount', 'expensetypes', 'receipt']
 
+    def validate_amount(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Amount must be a positive number.")
+        return value
+
+    def validate_receipt(self, value):
+        if value and not hasattr(value, 'file'):
+            raise serializers.ValidationError("Receipt must be a valid file.")
+        return value
+
     def create(self, validated_data):
         expensetypes_data = validated_data.pop('expensetypes')
         expensetype = ExpenseTypes.objects.create(**expensetypes_data)
@@ -32,5 +42,3 @@ class ExpensesSerializer(serializers.ModelSerializer):
             setattr(instance, attr, value)
         instance.save()
         return instance
-
-

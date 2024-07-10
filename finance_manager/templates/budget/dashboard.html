@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - {{ user.username }}{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <!-- Financial Status Overview -->
+        <div class="financial-status">
+            <h3>Financial Status</h3>
+            <p>Total Expenses: KES {{ total_expenses }}</p>
+            <p>Total Savings: KES {{ total_savings }}</p>
+            <p>Total Debt: KES {{ total_debt }}</p>
+            <p>Goals: {{ goals_count }}</p>
+            <!-- Add more financial metrics as needed -->
+        </div>
+
+
+    </div>
+</main>
+{% endblock %}
